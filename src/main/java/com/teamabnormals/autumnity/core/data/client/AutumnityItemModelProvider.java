@@ -28,17 +28,17 @@ public class AutumnityItemModelProvider extends ItemModelProvider {
 		this.generatedItem(MAPLE_LEAF_BANNER_PATTERN.get(), SWIRL_BANNER_PATTERN.get());
 		this.spawnEggItem(SNAIL_SPAWN_EGG.get(), TURKEY_SPAWN_EGG.get());
 
-//		ResourceLocation chestplate = ForgeRegistries.ITEMS.getKey(SNAIL_SHELL_CHESTPLATE.get());
-//		OverrideBuilder chestplateModel = item(SNAIL_SHELL_CHESTPLATE.get(), "generated").override();
-//		float trimType = 0.1F;
-//		for (String trim : new String[]{"quartz", "iron", "netherite", "redstone", "copper", "gold", "emerald", "diamond", "lapis", "amethyst"}) {
-//			ResourceLocation name = new ResourceLocation(chestplate.getNamespace(), chestplate.getPath() + "_" + trim + "_trim");
-//			chestplateModel = chestplateModel.model(new UncheckedModelFile(name)).predicate(new ResourceLocation("trim_type"), trimType);
-//			trimType += 0.1F;
+		ResourceLocation chestplate = ForgeRegistries.ITEMS.getKey(SNAIL_SHELL_CHESTPLATE.get());
+		ItemModelBuilder model = item(SNAIL_SHELL_CHESTPLATE.get(), "generated");
+		float trimType = 1;
+		for (String trim : new String[]{"quartz", "iron", "netherite", "redstone", "copper", "gold", "emerald", "diamond", "lapis", "amethyst"}) {
+			ResourceLocation name = new ResourceLocation(chestplate.getNamespace(), "item/" + chestplate.getPath() + "_" + trim + "_trim");
+			model.override().model(new UncheckedModelFile(name)).predicate(new ResourceLocation("trim_type"), (float) (trimType / 10.0));
 //			withExistingParent(name.getPath(), "item/generated")
 //					.texture("layer0", new ResourceLocation(this.modid, "item/" + chestplate.getPath()))
-//					.texture("layer1", "minecraft:trims/items/chestplate_trim"); //_" + trim);
-//		}
+//					.texture("layer1", "minecraft:trims/items/chestplate_trim" + trim);
+			trimType++;
+		}
 	}
 
 	private void generatedItem(ItemLike... items) {
