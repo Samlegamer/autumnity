@@ -3,6 +3,8 @@ package com.teamabnormals.autumnity.core.data.client;
 import com.teamabnormals.autumnity.core.Autumnity;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
@@ -27,17 +29,24 @@ public class AutumnityItemModelProvider extends ItemModelProvider {
 		this.handheldItem(TURKEY_PIECE.get(), COOKED_TURKEY_PIECE.get());
 		this.generatedItem(MAPLE_LEAF_BANNER_PATTERN.get(), SWIRL_BANNER_PATTERN.get());
 		this.spawnEggItem(SNAIL_SPAWN_EGG.get(), TURKEY_SPAWN_EGG.get());
+		this.trimmableArmor(SNAIL_SHELL_CHESTPLATE.get());
+	}
 
-		ResourceLocation chestplate = ForgeRegistries.ITEMS.getKey(SNAIL_SHELL_CHESTPLATE.get());
-		ItemModelBuilder model = item(SNAIL_SHELL_CHESTPLATE.get(), "generated");
-		float trimType = 1;
-		for (String trim : new String[]{"quartz", "iron", "netherite", "redstone", "copper", "gold", "emerald", "diamond", "lapis", "amethyst"}) {
-			ResourceLocation name = new ResourceLocation(chestplate.getNamespace(), "item/" + chestplate.getPath() + "_" + trim + "_trim");
-			model.override().model(new UncheckedModelFile(name)).predicate(new ResourceLocation("trim_type"), (float) (trimType / 10.0));
-//			withExistingParent(name.getPath(), "item/generated")
-//					.texture("layer0", new ResourceLocation(this.modid, "item/" + chestplate.getPath()))
-//					.texture("layer1", "minecraft:trims/items/chestplate_trim" + trim);
-			trimType++;
+	private void trimmableArmor(ItemLike... items) {
+		for (ItemLike item : items) {
+			if (item.asItem() instanceof ArmorItem armor) {
+				ResourceLocation location = ForgeRegistries.ITEMS.getKey(armor);
+				ItemModelBuilder itemModel = item(armor, "generated");
+				int trimType = 1;
+				for (String trim : new String[]{"quartz", "iron", "netherite", "redstone", "copper", "gold", "emerald", "diamond", "lapis", "amethyst"}) {
+					ResourceLocation name = new ResourceLocation(location.getNamespace(), "item/" + location.getPath() + "_" + trim + "_trim");
+					itemModel.override().model(new UncheckedModelFile(name)).predicate(new ResourceLocation("trim_type"), (float) (trimType / 10.0));
+					ResourceLocation texture = new ResourceLocation("trims/items/" + armor.getType().getName() + "_trim_" + trim);
+					this.existingFileHelper.trackGenerated(texture, PackType.CLIENT_RESOURCES, ".png", "textures");
+					withExistingParent(name.getPath(), "item/generated").texture("layer0", new ResourceLocation(this.modid, "item/" + location.getPath())).texture("layer1", texture);
+					trimType++;
+				}
+			}
 		}
 	}
 
