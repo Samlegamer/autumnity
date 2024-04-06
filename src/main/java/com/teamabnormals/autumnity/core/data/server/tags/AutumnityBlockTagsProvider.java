@@ -44,6 +44,7 @@ public class AutumnityBlockTagsProvider extends BlockTagsProvider {
 		this.tag(BlockTags.CLIMBABLE).add(MAPLE_LADDER.get());
 		this.tag(BlockTags.BEEHIVES).add(MAPLE_BEEHIVE.get());
 		this.tag(BlockTags.OVERWORLD_NATURAL_LOGS).add(MAPLE_LOG.get());
+		this.tag(BlockTags.ENCHANTMENT_POWER_PROVIDER).add(MAPLE_BOOKSHELF.get());
 
 		this.tag(BlockTags.SMALL_FLOWERS).add(AUTUMN_CROCUS.get());
 		this.tag(BlockTags.LEAVES).add(MAPLE_LEAVES.get(), YELLOW_MAPLE_LEAVES.get(), ORANGE_MAPLE_LEAVES.get(), RED_MAPLE_LEAVES.get());
