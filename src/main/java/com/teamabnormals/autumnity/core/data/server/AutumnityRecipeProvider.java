@@ -1,11 +1,21 @@
 package com.teamabnormals.autumnity.core.data.server;
 
+import com.google.common.collect.Maps;
 import com.teamabnormals.autumnity.core.Autumnity;
 import com.teamabnormals.autumnity.core.other.AutumnityBlockFamilies;
 import com.teamabnormals.autumnity.core.other.tags.AutumnityItemTags;
 import com.teamabnormals.autumnity.core.registry.AutumnityBlocks;
 import com.teamabnormals.autumnity.core.registry.AutumnityItems;
+import com.teamabnormals.blueprint.core.Blueprint;
+import com.teamabnormals.blueprint.core.api.conditions.BlueprintAndCondition;
+import com.teamabnormals.blueprint.core.api.conditions.ConfigValueCondition;
 import com.teamabnormals.blueprint.core.other.tags.BlueprintItemTags;
+import com.teamabnormals.woodworks.core.Woodworks;
+import com.teamabnormals.woodworks.core.WoodworksConfig;
+import net.minecraft.advancements.critereon.ContextAwarePredicate;
+import net.minecraft.advancements.critereon.InventoryChangeTrigger;
+import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
@@ -14,14 +24,19 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.ConditionalRecipe;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.ModLoadedCondition;
 import net.minecraftforge.common.crafting.conditions.NotCondition;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.function.Consumer;
+
+import static com.teamabnormals.woodworks.core.WoodworksConfig.COMMON;
 
 public class AutumnityRecipeProvider extends RecipeProvider {
 	public static final ModLoadedCondition WOODWORKS_LOADED = new ModLoadedCondition("woodworks");
@@ -31,6 +46,12 @@ public class AutumnityRecipeProvider extends RecipeProvider {
 	public static final ModLoadedCondition INCUBATION_LOADED = new ModLoadedCondition("incubation");
 	public static final ModLoadedCondition CAVERNS_AND_CHASMS_LOADED = new ModLoadedCondition("caverns_and_chasms");
 	public static final NotCondition ABNORMALS_DELIGHT_NOT_LOADED = new NotCondition(new ModLoadedCondition("abnormals_delight"));
+
+	public static final BlueprintAndCondition WOODEN_BOARDS = woodworksCondition(WoodworksConfig.COMMON.woodenBoards, "wooden_boards");
+	public static final BlueprintAndCondition WOODEN_BEEHIVES = woodworksCondition(WoodworksConfig.COMMON.woodenBeehives, "wooden_beehives");
+	public static final BlueprintAndCondition WOODEN_BOOKSHELVES = woodworksCondition(WoodworksConfig.COMMON.woodenBookshelves, "wooden_bookshelves");
+	public static final BlueprintAndCondition WOODEN_LADDERS = woodworksCondition(WoodworksConfig.COMMON.woodenLadders, "wooden_ladders");
+	public static final BlueprintAndCondition WOODEN_CHESTS = woodworksCondition(WoodworksConfig.COMMON.woodenChests, "wooden_chests");
 
 	public AutumnityRecipeProvider(PackOutput output) {
 		super(output);
@@ -105,16 +126,21 @@ public class AutumnityRecipeProvider extends RecipeProvider {
 		chestBoat(consumer, AutumnityItems.MAPLE_BOAT.getSecond().get(), AutumnityItems.MAPLE_BOAT.getFirst().get());
 		conditionalRecipe(consumer, BOATLOAD_LOADED, RecipeCategory.TRANSPORTATION, ShapelessRecipeBuilder.shapeless(RecipeCategory.TRANSPORTATION, AutumnityItems.MAPLE_FURNACE_BOAT.get()).requires(Blocks.FURNACE).requires(AutumnityItems.MAPLE_BOAT.getFirst().get()).group("furnace_boat").unlockedBy("has_boat", has(ItemTags.BOATS)));
 		conditionalRecipe(consumer, BOATLOAD_LOADED, RecipeCategory.TRANSPORTATION, ShapedRecipeBuilder.shaped(RecipeCategory.TRANSPORTATION, AutumnityItems.LARGE_MAPLE_BOAT.get()).define('#', AutumnityBlocks.MAPLE_PLANKS.get()).define('B', AutumnityItems.MAPLE_BOAT.getFirst().get()).pattern("#B#").pattern("###").group("large_boat").unlockedBy("has_boat", has(ItemTags.BOATS)));
-		//conditionalRecipe(consumer, WOODWORKS_LOADED, ShapedRecipeBuilder.shaped(AutumnityBlocks.MAPLE_BOARDS.get(), 3).define('#', AutumnityBlocks.MAPLE_PLANKS.get()).pattern("#").pattern("#").pattern("#").group("wooden_boards").unlockedBy(getHasName(AutumnityBlocks.MAPLE_PLANKS.get()), has(AutumnityBlocks.MAPLE_PLANKS.get())));
-		//conditionalRecipe(consumer, WOODEN_BOOKSHELVES, ShapedRecipeBuilder.shaped(AutumnityBlocks.MAPLE_BOOKSHELF.get()).define('#', AutumnityBlocks.MAPLE_PLANKS.get()).define('X', Items.BOOK).pattern("###").pattern("XXX").pattern("###").group("wooden_bookshelf").unlockedBy("has_book", has(Items.BOOK)));
-		//conditionalRecipe(consumer, WOODEN_LADDERS, ShapedRecipeBuilder.shaped(AutumnityBlocks.MAPLE_LADDER.get(), 4).define('#', AutumnityBlocks.MAPLE_PLANKS.get()).define('S', Items.STICK).pattern("S S").pattern("S#S").pattern("S S").group("wooden_ladder").unlockedBy("has_stick", has(Items.STICK)));
-		//conditionalRecipe(consumer, WOODWORKS_LOADED, ShapedRecipeBuilder.shaped(AutumnityBlocks.MAPLE_BEEHIVE.get()).define('#', AutumnityBlocks.MAPLE_PLANKS.get()).define('H', Items.HONEYCOMB).pattern("###").pattern("HHH").pattern("###").group("wooden_beehive").unlockedBy("has_honeycomb", has(Items.HONEYCOMB)));
-		//conditionalRecipe(consumer, WOODEN_CHESTS, ShapedRecipeBuilder.shaped(AutumnityBlocks.MAPLE_CHEST.get()).define('#', AutumnityBlocks.MAPLE_PLANKS.get()).pattern("###").pattern("# #").pattern("###").group("wooden_chest").unlockedBy("has_lots_of_items", new InventoryChangeTrigger.TriggerInstance(EntityPredicate.Composite.ANY, MinMaxBounds.Ints.atLeast(10), MinMaxBounds.Ints.ANY, MinMaxBounds.Ints.ANY, new ItemPredicate[0])));
-		//conditionalRecipe(consumer, WOODEN_CHESTS, ShapelessRecipeBuilder.shapeless(AutumnityBlocks.MAPLE_TRAPPED_CHEST.get()).requires(AutumnityBlocks.MAPLE_CHEST.get()).requires(Blocks.TRIPWIRE_HOOK).group("wooden_trapped_chest").unlockedBy("has_tripwire_hook", has(Blocks.TRIPWIRE_HOOK)));
+		conditionalRecipe(consumer, WOODEN_BOARDS, RecipeCategory.DECORATIONS, ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, AutumnityBlocks.MAPLE_BOARDS.get(), 3).define('#', AutumnityBlocks.MAPLE_PLANKS.get()).pattern("#").pattern("#").pattern("#").group("wooden_boards").unlockedBy(getHasName(AutumnityBlocks.MAPLE_PLANKS.get()), has(AutumnityBlocks.MAPLE_PLANKS.get())));
+		conditionalRecipe(consumer, WOODEN_BOOKSHELVES, RecipeCategory.BUILDING_BLOCKS, ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, AutumnityBlocks.MAPLE_BOOKSHELF.get()).define('#', AutumnityBlocks.MAPLE_PLANKS.get()).define('X', Items.BOOK).pattern("###").pattern("XXX").pattern("###").group("wooden_bookshelf").unlockedBy("has_book", has(Items.BOOK)));
+		conditionalRecipe(consumer, WOODEN_BOOKSHELVES, RecipeCategory.BUILDING_BLOCKS,  ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, AutumnityBlocks.CHISELED_MAPLE_BOOKSHELF.get()).define('#', AutumnityBlocks.MAPLE_PLANKS.get()).define('X', AutumnityBlocks.MAPLE_SLAB.get()).pattern("###").pattern("XXX").pattern("###").unlockedBy("has_book", has(Items.BOOK)));
+		conditionalRecipe(consumer, WOODEN_LADDERS, RecipeCategory.DECORATIONS, ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, AutumnityBlocks.MAPLE_LADDER.get(), 4).define('#', AutumnityBlocks.MAPLE_PLANKS.get()).define('S', Items.STICK).pattern("S S").pattern("S#S").pattern("S S").group("wooden_ladder").unlockedBy("has_stick", has(Items.STICK)));
+		conditionalRecipe(consumer, WOODEN_BEEHIVES, RecipeCategory.DECORATIONS, ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, AutumnityBlocks.MAPLE_BEEHIVE.get()).define('#', AutumnityBlocks.MAPLE_PLANKS.get()).define('H', Items.HONEYCOMB).pattern("###").pattern("HHH").pattern("###").group("wooden_beehive").unlockedBy("has_honeycomb", has(Items.HONEYCOMB)));
+		conditionalRecipe(consumer, WOODEN_CHESTS, RecipeCategory.DECORATIONS, ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, AutumnityBlocks.MAPLE_CHEST.get()).define('#', AutumnityBlocks.MAPLE_PLANKS.get()).pattern("###").pattern("# #").pattern("###").group("wooden_chest").unlockedBy("has_lots_of_items", new InventoryChangeTrigger.TriggerInstance(ContextAwarePredicate.ANY, MinMaxBounds.Ints.atLeast(10), MinMaxBounds.Ints.ANY, MinMaxBounds.Ints.ANY, new ItemPredicate[0])));
+		conditionalRecipe(consumer, WOODEN_CHESTS, RecipeCategory.REDSTONE, ShapelessRecipeBuilder.shapeless(RecipeCategory.REDSTONE, AutumnityBlocks.TRAPPED_MAPLE_CHEST.get()).requires(AutumnityBlocks.MAPLE_CHEST.get()).requires(Blocks.TRIPWIRE_HOOK).group("wooden_trapped_chest").unlockedBy("has_tripwire_hook", has(Blocks.TRIPWIRE_HOOK)));
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.FOOD, Blocks.CAKE).define('A', BlueprintItemTags.BUCKETS_MILK).define('B', Items.SUGAR).define('C', Items.WHEAT).define('E', Tags.Items.EGGS).pattern("AAA").pattern("BEB").pattern("CCC").unlockedBy("has_egg", has(Items.EGG)).save(consumer);
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, Items.PUMPKIN_PIE).requires(BlueprintItemTags.PUMPKINS).requires(Items.SUGAR).requires(Tags.Items.EGGS).unlockedBy("has_carved_pumpkin", has(Blocks.CARVED_PUMPKIN)).unlockedBy("has_pumpkin", has(BlueprintItemTags.PUMPKINS)).save(consumer);
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, Items.PUMPKIN_SEEDS, 4).requires(BlueprintItemTags.PUMPKINS).unlockedBy("has_pumpkin", has(BlueprintItemTags.PUMPKINS)).save(consumer);
+	}
+
+	public static BlueprintAndCondition woodworksCondition(ConfigValue<?> value, String valueID) {
+		return new BlueprintAndCondition(new ResourceLocation(Blueprint.MOD_ID, "and"), List.of(WOODWORKS_LOADED, new ConfigValueCondition(new ResourceLocation(Woodworks.MOD_ID, "config"), value, valueID, Maps.newHashMap(), false)));
 	}
 
 	public static void nineBlockStorageRecipes(Consumer<FinishedRecipe> consumer, RecipeCategory itemCategory, ItemLike item, RecipeCategory storageCategory, ItemLike storage) {

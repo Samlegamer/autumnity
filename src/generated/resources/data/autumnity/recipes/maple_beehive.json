@@ -12,7 +12,7 @@
             },
             {
               "type": "woodworks:config",
-              "value": "wooden_boards"
+              "value": "wooden_beehives"
             }
           ]
         }
@@ -20,18 +20,22 @@
       "recipe": {
         "type": "minecraft:crafting_shaped",
         "category": "misc",
-        "group": "wooden_boards",
-        "pattern": [
-          "#",
-          "#"
-        ],
+        "group": "wooden_beehive",
         "key": {
           "#": {
-            "item": "autumnity:maple_slab"
+            "item": "autumnity:maple_planks"
+          },
+          "H": {
+            "item": "minecraft:honeycomb"
           }
         },
+        "pattern": [
+          "###",
+          "HHH",
+          "###"
+        ],
         "result": {
-          "item": "autumnity:maple_boards"
+          "item": "autumnity:maple_beehive"
         },
         "show_notification": true
       }

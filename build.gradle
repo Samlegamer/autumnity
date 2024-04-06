@@ -81,6 +81,7 @@ dependencies {
 
     compileOnly fg.deobf("curse.maven:incubation-361718:3906687")
     compileOnly fg.deobf("com.teamabnormals:boatload:${project.minecraft}-${project.boatload}")
+    implementation fg.deobf("com.teamabnormals:woodworks:${project.minecraft}-${project.woodworks}")
 
     compileOnly fg.deobf("mezz.jei:jei-${project.minecraft}-common-api:${project.jei}")
     compileOnly fg.deobf("mezz.jei:jei-${project.minecraft}-forge-api:${project.jei}")

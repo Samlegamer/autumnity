@@ -12,7 +12,7 @@
             },
             {
               "type": "woodworks:config",
-              "value": "wooden_beehives"
+              "value": "wooden_ladders"
             }
           ]
         }
@@ -20,22 +20,23 @@
       "recipe": {
         "type": "minecraft:crafting_shaped",
         "category": "misc",
-        "group": "wooden_beehive",
-        "pattern": [
-          "###",
-          "HHH",
-          "###"
-        ],
+        "group": "wooden_ladder",
         "key": {
           "#": {
             "item": "autumnity:maple_planks"
           },
-          "H": {
-            "item": "minecraft:honeycomb"
+          "S": {
+            "item": "minecraft:stick"
           }
         },
+        "pattern": [
+          "S S",
+          "S#S",
+          "S S"
+        ],
         "result": {
-          "item": "autumnity:maple_beehive"
+          "count": 4,
+          "item": "autumnity:maple_ladder"
         },
         "show_notification": true
       }
