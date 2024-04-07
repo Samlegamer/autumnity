@@ -11,7 +11,6 @@ import com.teamabnormals.blueprint.core.api.conditions.BlueprintAndCondition;
 import com.teamabnormals.blueprint.core.api.conditions.ConfigValueCondition;
 import com.teamabnormals.blueprint.core.other.tags.BlueprintItemTags;
 import com.teamabnormals.woodworks.core.Woodworks;
-import com.teamabnormals.woodworks.core.WoodworksConfig;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
@@ -30,13 +29,12 @@ import net.minecraftforge.common.crafting.ConditionalRecipe;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.ModLoadedCondition;
 import net.minecraftforge.common.crafting.conditions.NotCondition;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Consumer;
 
-import static com.teamabnormals.woodworks.core.WoodworksConfig.COMMON;
+import static com.teamabnormals.autumnity.core.registry.AutumnityBlocks.*;
 
 public class AutumnityRecipeProvider extends RecipeProvider {
 	public static final ModLoadedCondition WOODWORKS_LOADED = new ModLoadedCondition("woodworks");
@@ -59,79 +57,78 @@ public class AutumnityRecipeProvider extends RecipeProvider {
 
 	@Override
 	public void buildRecipes(Consumer<FinishedRecipe> consumer) {
-		oneToOneConversionRecipe(consumer, Items.MAGENTA_DYE, AutumnityBlocks.AUTUMN_CROCUS.get(), "magenta_dye");
+		oneToOneConversionRecipe(consumer, Items.MAGENTA_DYE, AUTUMN_CROCUS.get(), "magenta_dye");
 		conditionalRecipe(consumer, BERRY_GOOD_LOADED, RecipeCategory.MISC, oneToOneConversionRecipeBuilder(AutumnityItems.FOUL_BERRY_PIPS.get(), AutumnityItems.FOUL_BERRIES.get(), 1));
-		conditionalNineBlockStorageRecipes(consumer, BERRY_GOOD_LOADED, RecipeCategory.FOOD, AutumnityItems.FOUL_BERRIES.get(), RecipeCategory.DECORATIONS, AutumnityBlocks.FOUL_BERRY_BASKET.get());
+		conditionalNineBlockStorageRecipes(consumer, BERRY_GOOD_LOADED, RecipeCategory.FOOD, AutumnityItems.FOUL_BERRIES.get(), RecipeCategory.DECORATIONS, FOUL_BERRY_BASKET.get());
 		conditionalRecipe(consumer, ABNORMALS_DELIGHT_NOT_LOADED, RecipeCategory.FOOD, ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, AutumnityItems.FOUL_SOUP.get()).requires(AutumnityItems.FOUL_BERRIES.get(), 2).requires(Items.SPIDER_EYE).requires(Items.BOWL, 1).unlockedBy("has_foul_berries", has(AutumnityItems.FOUL_BERRIES.get())));
 
 		foodCookingRecipes(consumer, AutumnityItems.TURKEY_PIECE.get(), AutumnityItems.COOKED_TURKEY_PIECE.get());
-		foodCookingRecipes(consumer, AutumnityBlocks.TURKEY.get(), AutumnityBlocks.COOKED_TURKEY.get());
-		conditionalRecipe(consumer, ABNORMALS_DELIGHT_NOT_LOADED, RecipeCategory.FOOD, oneToOneConversionRecipeBuilder(RecipeCategory.FOOD, AutumnityItems.TURKEY_PIECE.get(), AutumnityBlocks.TURKEY.get(), 5), getModConversionRecipeName(AutumnityItems.TURKEY_PIECE.get(), AutumnityBlocks.TURKEY.get()));
-		conditionalRecipe(consumer, ABNORMALS_DELIGHT_NOT_LOADED, RecipeCategory.FOOD, oneToOneConversionRecipeBuilder(RecipeCategory.FOOD, AutumnityItems.COOKED_TURKEY_PIECE.get(), AutumnityBlocks.COOKED_TURKEY.get(), 5), getModConversionRecipeName(AutumnityItems.COOKED_TURKEY_PIECE.get(), AutumnityBlocks.COOKED_TURKEY.get()));
-		conditionalNineBlockStorageRecipes(consumer, INCUBATION_LOADED, RecipeCategory.MISC, AutumnityItems.TURKEY_EGG.get(), RecipeCategory.DECORATIONS, AutumnityBlocks.TURKEY_EGG_CRATE.get());
+		foodCookingRecipes(consumer, TURKEY.get(), COOKED_TURKEY.get());
+		conditionalRecipe(consumer, ABNORMALS_DELIGHT_NOT_LOADED, RecipeCategory.FOOD, oneToOneConversionRecipeBuilder(RecipeCategory.FOOD, AutumnityItems.TURKEY_PIECE.get(), TURKEY.get(), 5), getModConversionRecipeName(AutumnityItems.TURKEY_PIECE.get(), TURKEY.get()));
+		conditionalRecipe(consumer, ABNORMALS_DELIGHT_NOT_LOADED, RecipeCategory.FOOD, oneToOneConversionRecipeBuilder(RecipeCategory.FOOD, AutumnityItems.COOKED_TURKEY_PIECE.get(), COOKED_TURKEY.get(), 5), getModConversionRecipeName(AutumnityItems.COOKED_TURKEY_PIECE.get(), COOKED_TURKEY.get()));
+		conditionalNineBlockStorageRecipes(consumer, INCUBATION_LOADED, RecipeCategory.MISC, AutumnityItems.TURKEY_EGG.get(), RecipeCategory.DECORATIONS, TURKEY_EGG_CRATE.get());
 
 		foodCookingRecipes(consumer, AutumnityItems.SAP_BOTTLE.get(), AutumnityItems.SYRUP_BOTTLE.get());
 		oneToOneConversionRecipe(consumer, Items.SUGAR, AutumnityItems.SAP_BOTTLE.get(), "sugar");
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, AutumnityBlocks.SAPPY_MAPLE_LOG.get()).requires(AutumnityItems.SAP_BOTTLE.get()).requires(AutumnityBlocks.STRIPPED_MAPLE_LOG.get()).unlockedBy("has_sap_bottle", has(AutumnityItems.SAP_BOTTLE.get())).save(consumer, getModConversionRecipeName(AutumnityBlocks.SAPPY_MAPLE_LOG.get(), AutumnityItems.SAP_BOTTLE.get()));
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, AutumnityBlocks.SAPPY_MAPLE_WOOD.get()).requires(AutumnityItems.SAP_BOTTLE.get()).requires(AutumnityBlocks.STRIPPED_MAPLE_WOOD.get()).unlockedBy("has_sap_bottle", has(AutumnityItems.SAP_BOTTLE.get())).save(consumer, getModConversionRecipeName(AutumnityBlocks.SAPPY_MAPLE_WOOD.get(), AutumnityItems.SAP_BOTTLE.get()));
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, AutumnityBlocks.PANCAKE.get()).requires(AutumnityItems.SYRUP_BOTTLE.get()).requires(BlueprintItemTags.MILK).requires(Tags.Items.EGGS).requires(Items.WHEAT, 2).unlockedBy("has_syrup_bottle", has(AutumnityItems.SYRUP_BOTTLE.get())).save(consumer);
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, SAPPY_MAPLE_LOG.get()).requires(AutumnityItems.SAP_BOTTLE.get()).requires(STRIPPED_MAPLE_LOG.get()).unlockedBy("has_sap_bottle", has(AutumnityItems.SAP_BOTTLE.get())).save(consumer, getModConversionRecipeName(SAPPY_MAPLE_LOG.get(), AutumnityItems.SAP_BOTTLE.get()));
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, SAPPY_MAPLE_WOOD.get()).requires(AutumnityItems.SAP_BOTTLE.get()).requires(STRIPPED_MAPLE_WOOD.get()).unlockedBy("has_sap_bottle", has(AutumnityItems.SAP_BOTTLE.get())).save(consumer, getModConversionRecipeName(SAPPY_MAPLE_WOOD.get(), AutumnityItems.SAP_BOTTLE.get()));
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, PANCAKE.get()).requires(AutumnityItems.SYRUP_BOTTLE.get()).requires(BlueprintItemTags.MILK).requires(Tags.Items.EGGS).requires(Items.WHEAT, 2).unlockedBy("has_syrup_bottle", has(AutumnityItems.SYRUP_BOTTLE.get())).save(consumer);
 		conditionalRecipe(consumer, ABNORMALS_DELIGHT_NOT_LOADED, RecipeCategory.FOOD, ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, AutumnityItems.PUMPKIN_BREAD.get(), 2).requires(AutumnityItems.SYRUP_BOTTLE.get()).requires(BlueprintItemTags.PUMPKINS).requires(Items.WHEAT, 2).unlockedBy("has_syrup_bottle", has(AutumnityItems.SYRUP_BOTTLE.get())));
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, AutumnityBlocks.REDSTONE_JACK_O_LANTERN.get()).define('A', Blocks.CARVED_PUMPKIN).define('B', Blocks.REDSTONE_TORCH).pattern("A").pattern("B").unlockedBy("has_carved_pumpkin", has(Blocks.CARVED_PUMPKIN)).save(consumer);
-		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, AutumnityBlocks.SOUL_JACK_O_LANTERN.get()).define('A', Blocks.CARVED_PUMPKIN).define('B', Blocks.SOUL_TORCH).pattern("A").pattern("B").unlockedBy("has_carved_pumpkin", has(Blocks.CARVED_PUMPKIN)).save(consumer);
-		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, AutumnityBlocks.LARGE_PUMPKIN_SLICE.get(), 4).define('#', Blocks.PUMPKIN).pattern("##").pattern("##").unlockedBy("has_pumpkin", has(Blocks.PUMPKIN)).save(consumer);
-		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, AutumnityBlocks.LARGE_JACK_O_LANTERN_SLICE.get()).define('A', AutumnityBlocks.CARVED_LARGE_PUMPKIN_SLICE.get()).define('B', Blocks.TORCH).pattern("A").pattern("B").unlockedBy("has_carved_large_pumpkin_slice", has(AutumnityBlocks.CARVED_LARGE_PUMPKIN_SLICE.get())).save(consumer);
-		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, AutumnityBlocks.LARGE_REDSTONE_JACK_O_LANTERN_SLICE.get()).define('A', AutumnityBlocks.CARVED_LARGE_PUMPKIN_SLICE.get()).define('B', Blocks.REDSTONE_TORCH).pattern("A").pattern("B").unlockedBy("has_carved_large_pumpkin_slice", has(AutumnityBlocks.CARVED_LARGE_PUMPKIN_SLICE.get())).save(consumer);
-		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, AutumnityBlocks.LARGE_SOUL_JACK_O_LANTERN_SLICE.get()).define('A', AutumnityBlocks.CARVED_LARGE_PUMPKIN_SLICE.get()).define('B', Blocks.SOUL_TORCH).pattern("A").pattern("B").unlockedBy("has_carved_large_pumpkin_slice", has(AutumnityBlocks.CARVED_LARGE_PUMPKIN_SLICE.get())).save(consumer);
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, REDSTONE_JACK_O_LANTERN.get()).define('A', Blocks.CARVED_PUMPKIN).define('B', Blocks.REDSTONE_TORCH).pattern("A").pattern("B").unlockedBy("has_carved_pumpkin", has(Blocks.CARVED_PUMPKIN)).save(consumer);
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, SOUL_JACK_O_LANTERN.get()).define('A', Blocks.CARVED_PUMPKIN).define('B', Blocks.SOUL_TORCH).pattern("A").pattern("B").unlockedBy("has_carved_pumpkin", has(Blocks.CARVED_PUMPKIN)).save(consumer);
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, LARGE_PUMPKIN_SLICE.get(), 4).define('#', Blocks.PUMPKIN).pattern("##").pattern("##").unlockedBy("has_pumpkin", has(Blocks.PUMPKIN)).save(consumer);
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, LARGE_JACK_O_LANTERN_SLICE.get()).define('A', CARVED_LARGE_PUMPKIN_SLICE.get()).define('B', Blocks.TORCH).pattern("A").pattern("B").unlockedBy("has_carved_large_pumpkin_slice", has(CARVED_LARGE_PUMPKIN_SLICE.get())).save(consumer);
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, LARGE_REDSTONE_JACK_O_LANTERN_SLICE.get()).define('A', CARVED_LARGE_PUMPKIN_SLICE.get()).define('B', Blocks.REDSTONE_TORCH).pattern("A").pattern("B").unlockedBy("has_carved_large_pumpkin_slice", has(CARVED_LARGE_PUMPKIN_SLICE.get())).save(consumer);
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, LARGE_SOUL_JACK_O_LANTERN_SLICE.get()).define('A', CARVED_LARGE_PUMPKIN_SLICE.get()).define('B', Blocks.SOUL_TORCH).pattern("A").pattern("B").unlockedBy("has_carved_large_pumpkin_slice", has(CARVED_LARGE_PUMPKIN_SLICE.get())).save(consumer);
 
-		conditionalRecipe(consumer, ENDERGETIC_LOADED, RecipeCategory.BUILDING_BLOCKS, ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, AutumnityBlocks.ENDER_JACK_O_LANTERN.get()).define('A', Blocks.CARVED_PUMPKIN).define('B', AutumnityItemTags.TORCHES_ENDER).pattern("A").pattern("B").unlockedBy("has_carved_pumpkin", has(Blocks.CARVED_PUMPKIN)));
-		conditionalRecipe(consumer, ENDERGETIC_LOADED, RecipeCategory.BUILDING_BLOCKS, ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, AutumnityBlocks.LARGE_ENDER_JACK_O_LANTERN_SLICE.get()).define('A', AutumnityBlocks.CARVED_LARGE_PUMPKIN_SLICE.get()).define('B', AutumnityItemTags.TORCHES_ENDER).pattern("A").pattern("B").unlockedBy("has_carved_large_pumpkin_slice", has(AutumnityBlocks.CARVED_LARGE_PUMPKIN_SLICE.get())));
-		conditionalRecipe(consumer, CAVERNS_AND_CHASMS_LOADED, RecipeCategory.BUILDING_BLOCKS, ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, AutumnityBlocks.CUPRIC_JACK_O_LANTERN.get()).define('A', Blocks.CARVED_PUMPKIN).define('B', AutumnityItemTags.TORCHES_CUPRIC).pattern("A").pattern("B").unlockedBy("has_carved_pumpkin", has(Blocks.CARVED_PUMPKIN)));
-		conditionalRecipe(consumer, CAVERNS_AND_CHASMS_LOADED, RecipeCategory.BUILDING_BLOCKS, ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, AutumnityBlocks.LARGE_CUPRIC_JACK_O_LANTERN_SLICE.get()).define('A', AutumnityBlocks.CARVED_LARGE_PUMPKIN_SLICE.get()).define('B', AutumnityItemTags.TORCHES_CUPRIC).pattern("A").pattern("B").unlockedBy("has_carved_large_pumpkin_slice", has(AutumnityBlocks.CARVED_LARGE_PUMPKIN_SLICE.get())));
+		conditionalRecipe(consumer, ENDERGETIC_LOADED, RecipeCategory.BUILDING_BLOCKS, ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ENDER_JACK_O_LANTERN.get()).define('A', Blocks.CARVED_PUMPKIN).define('B', AutumnityItemTags.TORCHES_ENDER).pattern("A").pattern("B").unlockedBy("has_carved_pumpkin", has(Blocks.CARVED_PUMPKIN)));
+		conditionalRecipe(consumer, ENDERGETIC_LOADED, RecipeCategory.BUILDING_BLOCKS, ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, LARGE_ENDER_JACK_O_LANTERN_SLICE.get()).define('A', CARVED_LARGE_PUMPKIN_SLICE.get()).define('B', AutumnityItemTags.TORCHES_ENDER).pattern("A").pattern("B").unlockedBy("has_carved_large_pumpkin_slice", has(CARVED_LARGE_PUMPKIN_SLICE.get())));
+		conditionalRecipe(consumer, CAVERNS_AND_CHASMS_LOADED, RecipeCategory.BUILDING_BLOCKS, ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, CUPRIC_JACK_O_LANTERN.get()).define('A', Blocks.CARVED_PUMPKIN).define('B', AutumnityItemTags.TORCHES_CUPRIC).pattern("A").pattern("B").unlockedBy("has_carved_pumpkin", has(Blocks.CARVED_PUMPKIN)));
+		conditionalRecipe(consumer, CAVERNS_AND_CHASMS_LOADED, RecipeCategory.BUILDING_BLOCKS, ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, LARGE_CUPRIC_JACK_O_LANTERN_SLICE.get()).define('A', CARVED_LARGE_PUMPKIN_SLICE.get()).define('B', AutumnityItemTags.TORCHES_CUPRIC).pattern("A").pattern("B").unlockedBy("has_carved_large_pumpkin_slice", has(CARVED_LARGE_PUMPKIN_SLICE.get())));
 
-		nineBlockStorageRecipes(consumer, RecipeCategory.MISC, AutumnityBlocks.SNAIL_GOO.get(), RecipeCategory.DECORATIONS, AutumnityBlocks.SNAIL_GOO_BLOCK.get());
-		nineBlockStorageRecipes(consumer, RecipeCategory.MISC, AutumnityItems.SNAIL_SHELL_PIECE.get(), RecipeCategory.BUILDING_BLOCKS, AutumnityBlocks.SNAIL_SHELL_BLOCK.get());
-		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, AutumnityBlocks.SNAIL_SHELL_BRICKS.get(), 8).define('#', Blocks.STONE_BRICKS).define('S', AutumnityItems.SNAIL_SHELL_PIECE.get()).pattern("###").pattern("#S#").pattern("###").unlockedBy("has_snail_shell_piece", has(AutumnityItems.SNAIL_SHELL_PIECE.get())).save(consumer);
-		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, AutumnityBlocks.SNAIL_SHELL_TILES.get(), 8).define('#', Blocks.SMOOTH_STONE).define('S', AutumnityItems.SNAIL_SHELL_PIECE.get()).pattern("###").pattern("#S#").pattern("###").unlockedBy("has_snail_shell_piece", has(AutumnityItems.SNAIL_SHELL_PIECE.get())).save(consumer);
+		nineBlockStorageRecipes(consumer, RecipeCategory.MISC, SNAIL_GOO.get(), RecipeCategory.DECORATIONS, SNAIL_GOO_BLOCK.get());
+		nineBlockStorageRecipes(consumer, RecipeCategory.MISC, AutumnityItems.SNAIL_SHELL_PIECE.get(), RecipeCategory.BUILDING_BLOCKS, SNAIL_SHELL_BLOCK.get());
 		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, AutumnityItems.SNAIL_SHELL_CHESTPLATE.get()).define('X', AutumnityItems.SNAIL_SHELL_PIECE.get()).pattern("X X").pattern("XXX").pattern("XXX").unlockedBy("has_snail_shell_piece", has(AutumnityItems.SNAIL_SHELL_PIECE.get())).save(consumer);
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AutumnityItems.SWIRL_BANNER_PATTERN.get()).requires(Items.PAPER).requires(AutumnityItems.SNAIL_SHELL_PIECE.get()).unlockedBy("has_snail_shell_piece", has(AutumnityItems.SNAIL_SHELL_PIECE.get())).save(consumer);
 
-		generateRecipes(consumer, AutumnityBlockFamilies.SNAIL_SHELL_BRICKS_FAMILY);
-		stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, AutumnityBlocks.SNAIL_SHELL_BRICK_SLAB.get(), AutumnityBlocks.SNAIL_SHELL_BRICKS.get(), 2);
-		stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, AutumnityBlocks.SNAIL_SHELL_BRICK_STAIRS.get(), AutumnityBlocks.SNAIL_SHELL_BRICKS.get());
-		stonecutterResultFromBase(consumer, RecipeCategory.DECORATIONS, AutumnityBlocks.SNAIL_SHELL_BRICK_WALL.get(), AutumnityBlocks.SNAIL_SHELL_BRICKS.get());
-		stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, AutumnityBlocks.CHISELED_SNAIL_SHELL_BRICKS.get(), AutumnityBlocks.SNAIL_SHELL_BRICKS.get());
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, AutumnityBlocks.SNAIL_SHELL_BRICKS.get(), 8).define('#', Blocks.STONE_BRICKS).define('S', AutumnityItems.SNAIL_SHELL_PIECE.get()).pattern("###").pattern("#S#").pattern("###").unlockedBy("has_snail_shell_piece", has(AutumnityItems.SNAIL_SHELL_PIECE.get())).save(consumer);generateRecipes(consumer, AutumnityBlockFamilies.SNAIL_SHELL_BRICKS_FAMILY);
+		stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, SNAIL_SHELL_BRICK_SLAB.get(), SNAIL_SHELL_BRICKS.get(), 2);
+		stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, SNAIL_SHELL_BRICK_STAIRS.get(), SNAIL_SHELL_BRICKS.get());
+		stonecutterResultFromBase(consumer, RecipeCategory.DECORATIONS, SNAIL_SHELL_BRICK_WALL.get(), SNAIL_SHELL_BRICKS.get());
+		stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, CHISELED_SNAIL_SHELL_BRICKS.get(), SNAIL_SHELL_BRICKS.get());
 
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, SNAIL_SHELL_TILES.get(), 4).define('#', SNAIL_SHELL_BRICKS.get()).pattern("##").pattern("##").unlockedBy("has_snail_shell_bricks", has(SNAIL_SHELL_BRICKS.get())).save(consumer);
 		generateRecipes(consumer, AutumnityBlockFamilies.SNAIL_SHELL_TILES_FAMILY);
-		stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, AutumnityBlocks.SNAIL_SHELL_TILE_SLAB.get(), AutumnityBlocks.SNAIL_SHELL_TILES.get(), 2);
-		stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, AutumnityBlocks.SNAIL_SHELL_TILE_STAIRS.get(), AutumnityBlocks.SNAIL_SHELL_TILES.get());
-		stonecutterResultFromBase(consumer, RecipeCategory.DECORATIONS, AutumnityBlocks.SNAIL_SHELL_TILE_WALL.get(), AutumnityBlocks.SNAIL_SHELL_TILES.get());
-		stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, AutumnityBlocks.SNAIL_SHELL_TILES.get(), AutumnityBlocks.SNAIL_SHELL_BRICKS.get());
-		stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, AutumnityBlocks.SNAIL_SHELL_TILE_SLAB.get(), AutumnityBlocks.SNAIL_SHELL_BRICKS.get(), 2);
-		stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, AutumnityBlocks.SNAIL_SHELL_TILE_STAIRS.get(), AutumnityBlocks.SNAIL_SHELL_BRICKS.get());
-		stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, AutumnityBlocks.SNAIL_SHELL_TILE_WALL.get(), AutumnityBlocks.SNAIL_SHELL_BRICKS.get());
+		stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, SNAIL_SHELL_TILE_SLAB.get(), SNAIL_SHELL_TILES.get(), 2);
+		stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, SNAIL_SHELL_TILE_STAIRS.get(), SNAIL_SHELL_TILES.get());
+		stonecutterResultFromBase(consumer, RecipeCategory.DECORATIONS, SNAIL_SHELL_TILE_WALL.get(), SNAIL_SHELL_TILES.get());
+		stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, SNAIL_SHELL_TILES.get(), SNAIL_SHELL_BRICKS.get());
+		stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, SNAIL_SHELL_TILE_SLAB.get(), SNAIL_SHELL_BRICKS.get(), 2);
+		stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, SNAIL_SHELL_TILE_STAIRS.get(), SNAIL_SHELL_BRICKS.get());
+		stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, SNAIL_SHELL_TILE_WALL.get(), SNAIL_SHELL_BRICKS.get());
 
 		generateRecipes(consumer, AutumnityBlockFamilies.MAPLE_PLANKS_FAMILY);
-		planksFromLogs(consumer, AutumnityBlocks.MAPLE_PLANKS.get(), AutumnityItemTags.MAPLE_LOGS, 4);
-		woodFromLogs(consumer, AutumnityBlocks.MAPLE_WOOD.get(), AutumnityBlocks.MAPLE_LOG.get());
-		woodFromLogs(consumer, AutumnityBlocks.STRIPPED_MAPLE_WOOD.get(), AutumnityBlocks.STRIPPED_MAPLE_LOG.get());
-		woodFromLogs(consumer, AutumnityBlocks.SAPPY_MAPLE_WOOD.get(), AutumnityBlocks.SAPPY_MAPLE_LOG.get());
-		hangingSign(consumer, AutumnityBlocks.MAPLE_HANGING_SIGNS.getFirst().get(), AutumnityBlocks.STRIPPED_MAPLE_LOG.get());
-		leafPileRecipes(consumer, AutumnityBlocks.MAPLE_LEAVES.get(), AutumnityBlocks.MAPLE_LEAF_PILE.get());
-		leafPileRecipes(consumer, AutumnityBlocks.YELLOW_MAPLE_LEAVES.get(), AutumnityBlocks.YELLOW_MAPLE_LEAF_PILE.get());
-		leafPileRecipes(consumer, AutumnityBlocks.ORANGE_MAPLE_LEAVES.get(), AutumnityBlocks.ORANGE_MAPLE_LEAF_PILE.get());
-		leafPileRecipes(consumer, AutumnityBlocks.RED_MAPLE_LEAVES.get(), AutumnityBlocks.RED_MAPLE_LEAF_PILE.get());
-		woodenBoat(consumer, AutumnityItems.MAPLE_BOAT.getFirst().get(), AutumnityBlocks.MAPLE_PLANKS.get());
+		planksFromLogs(consumer, MAPLE_PLANKS.get(), AutumnityItemTags.MAPLE_LOGS, 4);
+		woodFromLogs(consumer, MAPLE_WOOD.get(), MAPLE_LOG.get());
+		woodFromLogs(consumer, STRIPPED_MAPLE_WOOD.get(), STRIPPED_MAPLE_LOG.get());
+		woodFromLogs(consumer, SAPPY_MAPLE_WOOD.get(), SAPPY_MAPLE_LOG.get());
+		hangingSign(consumer, MAPLE_HANGING_SIGNS.getFirst().get(), STRIPPED_MAPLE_LOG.get());
+		leafPileRecipes(consumer, MAPLE_LEAVES.get(), MAPLE_LEAF_PILE.get());
+		leafPileRecipes(consumer, YELLOW_MAPLE_LEAVES.get(), YELLOW_MAPLE_LEAF_PILE.get());
+		leafPileRecipes(consumer, ORANGE_MAPLE_LEAVES.get(), ORANGE_MAPLE_LEAF_PILE.get());
+		leafPileRecipes(consumer, RED_MAPLE_LEAVES.get(), RED_MAPLE_LEAF_PILE.get());
+		woodenBoat(consumer, AutumnityItems.MAPLE_BOAT.getFirst().get(), MAPLE_PLANKS.get());
 		chestBoat(consumer, AutumnityItems.MAPLE_BOAT.getSecond().get(), AutumnityItems.MAPLE_BOAT.getFirst().get());
 		conditionalRecipe(consumer, BOATLOAD_LOADED, RecipeCategory.TRANSPORTATION, ShapelessRecipeBuilder.shapeless(RecipeCategory.TRANSPORTATION, AutumnityItems.MAPLE_FURNACE_BOAT.get()).requires(Blocks.FURNACE).requires(AutumnityItems.MAPLE_BOAT.getFirst().get()).group("furnace_boat").unlockedBy("has_boat", has(ItemTags.BOATS)));
-		conditionalRecipe(consumer, BOATLOAD_LOADED, RecipeCategory.TRANSPORTATION, ShapedRecipeBuilder.shaped(RecipeCategory.TRANSPORTATION, AutumnityItems.LARGE_MAPLE_BOAT.get()).define('#', AutumnityBlocks.MAPLE_PLANKS.get()).define('B', AutumnityItems.MAPLE_BOAT.getFirst().get()).pattern("#B#").pattern("###").group("large_boat").unlockedBy("has_boat", has(ItemTags.BOATS)));
-		conditionalRecipe(consumer, WOODEN_BOARDS, RecipeCategory.DECORATIONS, ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, AutumnityBlocks.MAPLE_BOARDS.get(), 3).define('#', AutumnityBlocks.MAPLE_PLANKS.get()).pattern("#").pattern("#").pattern("#").group("wooden_boards").unlockedBy(getHasName(AutumnityBlocks.MAPLE_PLANKS.get()), has(AutumnityBlocks.MAPLE_PLANKS.get())));
-		conditionalRecipe(consumer, WOODEN_BOOKSHELVES, RecipeCategory.BUILDING_BLOCKS, ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, AutumnityBlocks.MAPLE_BOOKSHELF.get()).define('#', AutumnityBlocks.MAPLE_PLANKS.get()).define('X', Items.BOOK).pattern("###").pattern("XXX").pattern("###").group("wooden_bookshelf").unlockedBy("has_book", has(Items.BOOK)));
-		conditionalRecipe(consumer, WOODEN_BOOKSHELVES, RecipeCategory.BUILDING_BLOCKS,  ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, AutumnityBlocks.CHISELED_MAPLE_BOOKSHELF.get()).define('#', AutumnityBlocks.MAPLE_PLANKS.get()).define('X', AutumnityBlocks.MAPLE_SLAB.get()).pattern("###").pattern("XXX").pattern("###").unlockedBy("has_book", has(Items.BOOK)));
-		conditionalRecipe(consumer, WOODEN_LADDERS, RecipeCategory.DECORATIONS, ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, AutumnityBlocks.MAPLE_LADDER.get(), 4).define('#', AutumnityBlocks.MAPLE_PLANKS.get()).define('S', Items.STICK).pattern("S S").pattern("S#S").pattern("S S").group("wooden_ladder").unlockedBy("has_stick", has(Items.STICK)));
-		conditionalRecipe(consumer, WOODEN_BEEHIVES, RecipeCategory.DECORATIONS, ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, AutumnityBlocks.MAPLE_BEEHIVE.get()).define('#', AutumnityBlocks.MAPLE_PLANKS.get()).define('H', Items.HONEYCOMB).pattern("###").pattern("HHH").pattern("###").group("wooden_beehive").unlockedBy("has_honeycomb", has(Items.HONEYCOMB)));
-		conditionalRecipe(consumer, WOODEN_CHESTS, RecipeCategory.DECORATIONS, ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, AutumnityBlocks.MAPLE_CHEST.get()).define('#', AutumnityBlocks.MAPLE_PLANKS.get()).pattern("###").pattern("# #").pattern("###").group("wooden_chest").unlockedBy("has_lots_of_items", new InventoryChangeTrigger.TriggerInstance(ContextAwarePredicate.ANY, MinMaxBounds.Ints.atLeast(10), MinMaxBounds.Ints.ANY, MinMaxBounds.Ints.ANY, new ItemPredicate[0])));
-		conditionalRecipe(consumer, WOODEN_CHESTS, RecipeCategory.REDSTONE, ShapelessRecipeBuilder.shapeless(RecipeCategory.REDSTONE, AutumnityBlocks.TRAPPED_MAPLE_CHEST.get()).requires(AutumnityBlocks.MAPLE_CHEST.get()).requires(Blocks.TRIPWIRE_HOOK).group("wooden_trapped_chest").unlockedBy("has_tripwire_hook", has(Blocks.TRIPWIRE_HOOK)));
+		conditionalRecipe(consumer, BOATLOAD_LOADED, RecipeCategory.TRANSPORTATION, ShapedRecipeBuilder.shaped(RecipeCategory.TRANSPORTATION, AutumnityItems.LARGE_MAPLE_BOAT.get()).define('#', MAPLE_PLANKS.get()).define('B', AutumnityItems.MAPLE_BOAT.getFirst().get()).pattern("#B#").pattern("###").group("large_boat").unlockedBy("has_boat", has(ItemTags.BOATS)));
+		conditionalRecipe(consumer, WOODEN_BOARDS, RecipeCategory.DECORATIONS, ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, MAPLE_BOARDS.get(), 3).define('#', MAPLE_PLANKS.get()).pattern("#").pattern("#").pattern("#").group("wooden_boards").unlockedBy(getHasName(MAPLE_PLANKS.get()), has(MAPLE_PLANKS.get())));
+		conditionalRecipe(consumer, WOODEN_BOOKSHELVES, RecipeCategory.BUILDING_BLOCKS, ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, MAPLE_BOOKSHELF.get()).define('#', MAPLE_PLANKS.get()).define('X', Items.BOOK).pattern("###").pattern("XXX").pattern("###").group("wooden_bookshelf").unlockedBy("has_book", has(Items.BOOK)));
+		conditionalRecipe(consumer, WOODEN_BOOKSHELVES, RecipeCategory.BUILDING_BLOCKS, ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, CHISELED_MAPLE_BOOKSHELF.get()).define('#', MAPLE_PLANKS.get()).define('X', MAPLE_SLAB.get()).pattern("###").pattern("XXX").pattern("###").unlockedBy("has_book", has(Items.BOOK)));
+		conditionalRecipe(consumer, WOODEN_LADDERS, RecipeCategory.DECORATIONS, ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, MAPLE_LADDER.get(), 4).define('#', MAPLE_PLANKS.get()).define('S', Items.STICK).pattern("S S").pattern("S#S").pattern("S S").group("wooden_ladder").unlockedBy("has_stick", has(Items.STICK)));
+		conditionalRecipe(consumer, WOODEN_BEEHIVES, RecipeCategory.DECORATIONS, ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, MAPLE_BEEHIVE.get()).define('#', MAPLE_PLANKS.get()).define('H', Items.HONEYCOMB).pattern("###").pattern("HHH").pattern("###").group("wooden_beehive").unlockedBy("has_honeycomb", has(Items.HONEYCOMB)));
+		conditionalRecipe(consumer, WOODEN_CHESTS, RecipeCategory.DECORATIONS, ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, MAPLE_CHEST.get()).define('#', MAPLE_PLANKS.get()).pattern("###").pattern("# #").pattern("###").group("wooden_chest").unlockedBy("has_lots_of_items", new InventoryChangeTrigger.TriggerInstance(ContextAwarePredicate.ANY, MinMaxBounds.Ints.atLeast(10), MinMaxBounds.Ints.ANY, MinMaxBounds.Ints.ANY, new ItemPredicate[0])));
+		conditionalRecipe(consumer, WOODEN_CHESTS, RecipeCategory.REDSTONE, ShapelessRecipeBuilder.shapeless(RecipeCategory.REDSTONE, TRAPPED_MAPLE_CHEST.get()).requires(MAPLE_CHEST.get()).requires(Blocks.TRIPWIRE_HOOK).group("wooden_trapped_chest").unlockedBy("has_tripwire_hook", has(Blocks.TRIPWIRE_HOOK)));
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.FOOD, Blocks.CAKE).define('A', BlueprintItemTags.BUCKETS_MILK).define('B', Items.SUGAR).define('C', Items.WHEAT).define('E', Tags.Items.EGGS).pattern("AAA").pattern("BEB").pattern("CCC").unlockedBy("has_egg", has(Items.EGG)).save(consumer);
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, Items.PUMPKIN_PIE).requires(BlueprintItemTags.PUMPKINS).requires(Items.SUGAR).requires(Tags.Items.EGGS).unlockedBy("has_carved_pumpkin", has(Blocks.CARVED_PUMPKIN)).unlockedBy("has_pumpkin", has(BlueprintItemTags.PUMPKINS)).save(consumer);

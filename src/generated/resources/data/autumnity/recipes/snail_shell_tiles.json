@@ -3,19 +3,15 @@
   "category": "building",
   "key": {
     "#": {
-      "item": "minecraft:smooth_stone"
-    },
-    "S": {
-      "item": "autumnity:snail_shell_piece"
+      "item": "autumnity:snail_shell_bricks"
     }
   },
   "pattern": [
-    "###",
-    "#S#",
-    "###"
+    "##",
+    "##"
   ],
   "result": {
-    "count": 8,
+    "count": 4,
     "item": "autumnity:snail_shell_tiles"
   },
   "show_notification": true
