@@ -205,8 +205,9 @@ public class AutumnityLootTableProvider extends LootTableProvider {
 		public void generate(BiConsumer<ResourceLocation, LootTable.Builder> consumer) {
 			consumer.accept(new ResourceLocation(Autumnity.MOD_ID, "chests/maple_hut"), LootTable.lootTable()
 					.withPool(LootPool.lootPool().setRolls(UniformGenerator.between(1.0F, 2.0F))
-							.add(LootItem.lootTableItem(SNAIL_GOO.get()).setWeight(10).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 4.0F))))
-							.add(LootItem.lootTableItem(Items.GLASS_BOTTLE).setWeight(10).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F)))))
+							.add(LootItem.lootTableItem(SNAIL_GOO.get()).setWeight(9).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 4.0F))))
+							.add(LootItem.lootTableItem(Items.GLASS_BOTTLE).setWeight(8).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F))))
+							.add(LootItem.lootTableItem(AutumnityItems.MAPLE_LEAF_BANNER_PATTERN.get()).setWeight(3).apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F)))))
 					.withPool(LootPool.lootPool().setRolls(UniformGenerator.between(3.0F, 5.0F))
 							.add(LootItem.lootTableItem(AutumnityItems.FOUL_BERRIES.get()).setWeight(10).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 4.0F))))
 							.add(LootItem.lootTableItem(Items.SUGAR).setWeight(10).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 4.0F))))

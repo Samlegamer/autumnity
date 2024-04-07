@@ -58,10 +58,10 @@ public class AutumnityBlockStateProvider extends BlockStateProvider {
 
 		this.planksCompat(MAPLE_PLANKS.get(), MAPLE_BOARDS.get(), MAPLE_LADDER.get(), MAPLE_BEEHIVE.get(), MAPLE_CHEST.get(), TRAPPED_MAPLE_CHEST.get());
 		this.bookshelfBlocks(MAPLE_PLANKS.get(), MAPLE_BOOKSHELF.get(), CHISELED_MAPLE_BOOKSHELF.get(), MAPLE_BOOKSHELF_POSITIONS, Autumnity.MOD_ID + ":block/chiseled_maple");
-		this.leavesCompat(MAPLE_LEAVES.get(), MAPLE_LEAF_PILE.get());
-		this.leavesCompat(MAPLE_LEAVES.get(), YELLOW_MAPLE_LEAF_PILE.get());
-		this.leavesCompat(MAPLE_LEAVES.get(), ORANGE_MAPLE_LEAF_PILE.get());
-		this.leavesCompat(MAPLE_LEAVES.get(), RED_MAPLE_LEAF_PILE.get());
+		this.leafPileBlock(MAPLE_LEAVES.get(), MAPLE_LEAF_PILE.get());
+		this.leafPileBlock(MAPLE_LEAVES.get(), YELLOW_MAPLE_LEAF_PILE.get());
+		this.leafPileBlock(MAPLE_LEAVES.get(), ORANGE_MAPLE_LEAF_PILE.get());
+		this.leafPileBlock(MAPLE_LEAVES.get(), RED_MAPLE_LEAF_PILE.get());
 	}
 
 	public void block(Block block) {
@@ -75,6 +75,18 @@ public class AutumnityBlockStateProvider extends BlockStateProvider {
 
 		if (family.getVariants().containsKey(Variant.CHISELED)) {
 			this.block(family.get(Variant.CHISELED));
+		}
+
+		if (family.getVariants().containsKey(Variant.CRACKED)) {
+			this.block(family.get(Variant.POLISHED));
+		}
+
+		if (family.getVariants().containsKey(Variant.CUT)) {
+			this.block(family.get(Variant.POLISHED));
+		}
+
+		if (family.getVariants().containsKey(Variant.POLISHED)) {
+			this.block(family.get(Variant.POLISHED));
 		}
 
 		if (family.getVariants().containsKey(Variant.SLAB)) {
@@ -109,6 +121,7 @@ public class AutumnityBlockStateProvider extends BlockStateProvider {
 
 		if (family.getVariants().containsKey(Variant.BUTTON)) {
 			ButtonBlock button = (ButtonBlock) family.get(Variant.BUTTON);
+
 			ModelFile buttonModel = models().withExistingParent(name(button), "block/button").texture("texture", blockTexture(block));
 			ModelFile buttonPressedModel = models().withExistingParent(name(button) + "_pressed", "block/button_pressed").texture("texture", blockTexture(block));
 			ModelFile buttonInventoryModel = models().withExistingParent(name(button) + "_inventory", "block/button_inventory").texture("texture", blockTexture(block));
@@ -217,10 +230,6 @@ public class AutumnityBlockStateProvider extends BlockStateProvider {
 		this.ladderBlock(ladder);
 		this.beehiveBlock(beehive);
 		this.chestBlocks(planks, chest, trappedChest);
-	}
-
-	public void leavesCompat(Block leaves, Block leafPile) {
-		this.leafPileBlock(leaves, leafPile);
 	}
 
 	public void leavesBlock(Block leaves) {

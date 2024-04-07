@@ -47,11 +47,11 @@ public class AutumnityRecipeProvider extends RecipeProvider {
 	public static final ModLoadedCondition CAVERNS_AND_CHASMS_LOADED = new ModLoadedCondition("caverns_and_chasms");
 	public static final NotCondition ABNORMALS_DELIGHT_NOT_LOADED = new NotCondition(new ModLoadedCondition("abnormals_delight"));
 
-	public static final BlueprintAndCondition WOODEN_BOARDS = woodworksCondition(WoodworksConfig.COMMON.woodenBoards, "wooden_boards");
-	public static final BlueprintAndCondition WOODEN_BEEHIVES = woodworksCondition(WoodworksConfig.COMMON.woodenBeehives, "wooden_beehives");
-	public static final BlueprintAndCondition WOODEN_BOOKSHELVES = woodworksCondition(WoodworksConfig.COMMON.woodenBookshelves, "wooden_bookshelves");
-	public static final BlueprintAndCondition WOODEN_LADDERS = woodworksCondition(WoodworksConfig.COMMON.woodenLadders, "wooden_ladders");
-	public static final BlueprintAndCondition WOODEN_CHESTS = woodworksCondition(WoodworksConfig.COMMON.woodenChests, "wooden_chests");
+	public static final BlueprintAndCondition WOODEN_BOARDS = woodworksCondition(null, "wooden_boards");
+	public static final BlueprintAndCondition WOODEN_BEEHIVES = woodworksCondition(null, "wooden_beehives");
+	public static final BlueprintAndCondition WOODEN_BOOKSHELVES = woodworksCondition(null, "wooden_bookshelves");
+	public static final BlueprintAndCondition WOODEN_LADDERS = woodworksCondition(null, "wooden_ladders");
+	public static final BlueprintAndCondition WOODEN_CHESTS = woodworksCondition(null, "wooden_chests");
 
 	public AutumnityRecipeProvider(PackOutput output) {
 		super(output);
@@ -75,7 +75,6 @@ public class AutumnityRecipeProvider extends RecipeProvider {
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, AutumnityBlocks.SAPPY_MAPLE_LOG.get()).requires(AutumnityItems.SAP_BOTTLE.get()).requires(AutumnityBlocks.STRIPPED_MAPLE_LOG.get()).unlockedBy("has_sap_bottle", has(AutumnityItems.SAP_BOTTLE.get())).save(consumer, getModConversionRecipeName(AutumnityBlocks.SAPPY_MAPLE_LOG.get(), AutumnityItems.SAP_BOTTLE.get()));
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, AutumnityBlocks.SAPPY_MAPLE_WOOD.get()).requires(AutumnityItems.SAP_BOTTLE.get()).requires(AutumnityBlocks.STRIPPED_MAPLE_WOOD.get()).unlockedBy("has_sap_bottle", has(AutumnityItems.SAP_BOTTLE.get())).save(consumer, getModConversionRecipeName(AutumnityBlocks.SAPPY_MAPLE_WOOD.get(), AutumnityItems.SAP_BOTTLE.get()));
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, AutumnityBlocks.PANCAKE.get()).requires(AutumnityItems.SYRUP_BOTTLE.get()).requires(BlueprintItemTags.MILK).requires(Tags.Items.EGGS).requires(Items.WHEAT, 2).unlockedBy("has_syrup_bottle", has(AutumnityItems.SYRUP_BOTTLE.get())).save(consumer);
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AutumnityItems.MAPLE_LEAF_BANNER_PATTERN.get()).requires(Items.PAPER).requires(AutumnityItems.SYRUP_BOTTLE.get()).unlockedBy("has_syrup_bottle", has(AutumnityItems.SYRUP_BOTTLE.get())).save(consumer);
 		conditionalRecipe(consumer, ABNORMALS_DELIGHT_NOT_LOADED, RecipeCategory.FOOD, ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, AutumnityItems.PUMPKIN_BREAD.get(), 2).requires(AutumnityItems.SYRUP_BOTTLE.get()).requires(BlueprintItemTags.PUMPKINS).requires(Items.WHEAT, 2).unlockedBy("has_syrup_bottle", has(AutumnityItems.SYRUP_BOTTLE.get())));
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, AutumnityBlocks.REDSTONE_JACK_O_LANTERN.get()).define('A', Blocks.CARVED_PUMPKIN).define('B', Blocks.REDSTONE_TORCH).pattern("A").pattern("B").unlockedBy("has_carved_pumpkin", has(Blocks.CARVED_PUMPKIN)).save(consumer);

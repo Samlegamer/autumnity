@@ -18,7 +18,7 @@
             }
           ],
           "name": "autumnity:snail_goo",
-          "weight": 10
+          "weight": 9
         },
         {
           "type": "minecraft:item",
@@ -34,7 +34,19 @@
             }
           ],
           "name": "minecraft:glass_bottle",
-          "weight": 10
+          "weight": 8
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "autumnity:maple_leaf_banner_pattern",
+          "weight": 3
         }
       ],
       "rolls": {
