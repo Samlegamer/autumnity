@@ -24,16 +24,6 @@ public class AutumnityClientCompat {
 		ItemBlockRenderTypes.setRenderLayer(AutumnityBlocks.MAPLE_DOOR.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(AutumnityBlocks.MAPLE_TRAPDOOR.get(), RenderType.cutout());
 
-		ItemBlockRenderTypes.setRenderLayer(AutumnityBlocks.MAPLE_LEAVES.get(), RenderType.cutoutMipped());
-		ItemBlockRenderTypes.setRenderLayer(AutumnityBlocks.YELLOW_MAPLE_LEAVES.get(), RenderType.cutoutMipped());
-		ItemBlockRenderTypes.setRenderLayer(AutumnityBlocks.ORANGE_MAPLE_LEAVES.get(), RenderType.cutoutMipped());
-		ItemBlockRenderTypes.setRenderLayer(AutumnityBlocks.RED_MAPLE_LEAVES.get(), RenderType.cutoutMipped());
-
-		ItemBlockRenderTypes.setRenderLayer(AutumnityBlocks.MAPLE_LEAF_PILE.get(), RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(AutumnityBlocks.YELLOW_MAPLE_LEAF_PILE.get(), RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(AutumnityBlocks.ORANGE_MAPLE_LEAF_PILE.get(), RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(AutumnityBlocks.RED_MAPLE_LEAF_PILE.get(), RenderType.cutout());
-
 		ItemBlockRenderTypes.setRenderLayer(AutumnityBlocks.MAPLE_SAPLING.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(AutumnityBlocks.YELLOW_MAPLE_SAPLING.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(AutumnityBlocks.ORANGE_MAPLE_SAPLING.get(), RenderType.cutout());
@@ -44,7 +34,6 @@ public class AutumnityClientCompat {
 		ItemBlockRenderTypes.setRenderLayer(AutumnityBlocks.POTTED_ORANGE_MAPLE_SAPLING.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(AutumnityBlocks.POTTED_RED_MAPLE_SAPLING.get(), RenderType.cutout());
 
-		ItemBlockRenderTypes.setRenderLayer(AutumnityBlocks.MAPLE_LADDER.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(AutumnityBlocks.POTTED_FOUL_BERRIES.get(), RenderType.cutout());
 	}
 
