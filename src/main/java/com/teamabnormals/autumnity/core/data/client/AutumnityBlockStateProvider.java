@@ -27,7 +27,7 @@ public class AutumnityBlockStateProvider extends BlueprintBlockStateProvider {
 		this.logBlocks(MAPLE_LOG, MAPLE_WOOD);
 		this.logBlocks(STRIPPED_MAPLE_LOG, STRIPPED_MAPLE_WOOD);
 		this.logBlocks(SAPPY_MAPLE_LOG, SAPPY_MAPLE_WOOD);
-		this.hangingSignBlocks(STRIPPED_MAPLE_LOG, MAPLE_HANGING_SIGNS.getFirst(), MAPLE_HANGING_SIGNS.getSecond());
+		this.hangingSignBlocks(STRIPPED_MAPLE_LOG, MAPLE_HANGING_SIGNS);
 
 		this.mapleLeavesBlocks(MAPLE_LEAVES, MAPLE_LEAF_PILE);
 		this.mapleLeavesBlocks(YELLOW_MAPLE_LEAVES, YELLOW_MAPLE_LEAF_PILE);

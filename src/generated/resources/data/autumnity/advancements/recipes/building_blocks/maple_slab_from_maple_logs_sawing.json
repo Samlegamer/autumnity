@@ -4,13 +4,11 @@
       "advancement": {
         "parent": "minecraft:recipes/root",
         "criteria": {
-          "has_maple_slab": {
+          "has_maple_logs": {
             "conditions": {
               "items": [
                 {
-                  "items": [
-                    "autumnity:maple_slab"
-                  ]
+                  "tag": "autumnity:maple_logs"
                 }
               ]
             },
@@ -18,20 +16,20 @@
           },
           "has_the_recipe": {
             "conditions": {
-              "recipe": "autumnity:maple_boards"
+              "recipe": "autumnity:maple_slab_from_maple_logs_sawing"
             },
             "trigger": "minecraft:recipe_unlocked"
           }
         },
         "requirements": [
           [
-            "has_maple_slab",
+            "has_maple_logs",
             "has_the_recipe"
           ]
         ],
         "rewards": {
           "recipes": [
-            "autumnity:maple_boards"
+            "autumnity:maple_slab_from_maple_logs_sawing"
           ]
         },
         "sends_telemetry_event": false
@@ -46,7 +44,7 @@
             },
             {
               "type": "woodworks:config",
-              "value": "wooden_boards"
+              "value": "sawmill"
             }
           ]
         }
