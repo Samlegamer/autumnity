@@ -167,6 +167,10 @@ public class AutumnityBlocks {
 				.tab(NATURAL_BLOCKS)
 				.addItemsAfter(ofID(AutumnityConstants.SWEET_BERRY_BASKET), FOUL_BERRY_BASKET);
 
+		CreativeModeTabContentsPopulator.mod("incubation_1")
+				.tab(NATURAL_BLOCKS)
+				.addItemsAfter(ofID(AutumnityConstants.CHICKEN_EGG_CRATE), TURKEY_EGG_CRATE);
+
 		CreativeModeTabContentsPopulator.mod("woodworks_1")
 				.tab(FUNCTIONAL_BLOCKS)
 				.addItemsBefore(ofID(AutumnityConstants.BAMBOO_LADDER), MAPLE_LADDER)
