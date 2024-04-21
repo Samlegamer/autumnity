@@ -4,6 +4,7 @@ import com.teamabnormals.autumnity.core.other.tags.AutumnityItemTags;
 import com.teamabnormals.autumnity.core.registry.AutumnityEntityTypes;
 import com.teamabnormals.autumnity.core.registry.AutumnityItems;
 import com.teamabnormals.autumnity.core.registry.AutumnitySoundEvents;
+import com.teamabnormals.blueprint.core.api.EggLayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -25,6 +26,7 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
@@ -36,7 +38,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.UUID;
 
-public class Turkey extends Animal implements NeutralMob {
+public class Turkey extends Animal implements NeutralMob, EggLayer {
 	private static final EntityDataAccessor<Integer> ANGER_TIME = SynchedEntityData.defineId(Turkey.class, EntityDataSerializers.INT);
 
 	private float wingRotation;
@@ -142,10 +144,10 @@ public class Turkey extends Animal implements NeutralMob {
 		}
 
 		if (!this.level().isClientSide) {
-			if (this.isAlive() && !this.isBaby() && !this.isTurkeyJockey() && --this.timeUntilNextEgg <= 0) {
-				this.playSound(AutumnitySoundEvents.ENTITY_TURKEY_EGG.get(), 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
-				this.spawnAtLocation(AutumnityItems.TURKEY_EGG.get());
-				this.timeUntilNextEgg = this.getRandomNextEggTime(this.random);
+			if (this.isAlive() && !this.isBaby() && !this.isBirdJockey() && --this.timeUntilNextEgg <= 0) {
+				this.playSound(this.getEggLayingSound(), 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
+				this.spawnAtLocation(this.getEggItem());
+				this.setEggTimer(this.getNextEggTime(this.random));
 			}
 
 			this.updatePersistentAnger((ServerLevel) this.level(), true);
@@ -202,7 +204,7 @@ public class Turkey extends Animal implements NeutralMob {
 
 	@Override
 	public int getExperienceReward() {
-		return this.isTurkeyJockey() ? 10 : super.getExperienceReward();
+		return this.isBirdJockey() ? 10 : super.getExperienceReward();
 	}
 
 	@Override
@@ -225,7 +227,7 @@ public class Turkey extends Animal implements NeutralMob {
 
 	@Override
 	public boolean removeWhenFarAway(double distanceToClosestPlayer) {
-		return this.isTurkeyJockey();
+		return this.isBirdJockey();
 	}
 
 	@Override
@@ -237,10 +239,6 @@ public class Turkey extends Animal implements NeutralMob {
 		if (passenger instanceof LivingEntity) {
 			((LivingEntity) passenger).yBodyRot = this.yBodyRot;
 		}
-	}
-
-	public boolean isTurkeyJockey() {
-		return this.turkeyJockey;
 	}
 
 	public void setTurkeyJockey(boolean jockey) {
@@ -282,8 +280,34 @@ public class Turkey extends Animal implements NeutralMob {
 		this.setRemainingPersistentAngerTime(ANGER_RANGE.sample(this.random));
 	}
 
-	public int getRandomNextEggTime(RandomSource rand) {
+	@Override
+	public int getEggTimer() {
+		return this.timeUntilNextEgg;
+	}
+
+	@Override
+	public void setEggTimer(int time) {
+		this.timeUntilNextEgg = time;
+	}
+
+	@Override
+	public boolean isBirdJockey() {
+		return this.turkeyJockey;
+	}
+
+	@Override
+	public Item getEggItem() {
+		return AutumnityItems.TURKEY_EGG.get();
+	}
+
+	@Override
+	public int getNextEggTime(RandomSource rand) {
 		return rand.nextInt(9600) + 9600;
+	}
+
+	@Override
+	public SoundEvent getEggLayingSound() {
+		return AutumnitySoundEvents.ENTITY_TURKEY_EGG.get();
 	}
 
 	static class PanicGoal extends net.minecraft.world.entity.ai.goal.PanicGoal {
@@ -329,7 +353,7 @@ public class Turkey extends Animal implements NeutralMob {
 		public boolean canUse() {
 			Turkey turkey = (Turkey) this.mob;
 
-			return turkey.isTurkeyJockey() && super.canUse();
+			return turkey.isBirdJockey() && super.canUse();
 		}
 	}
 }

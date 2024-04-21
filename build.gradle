@@ -79,7 +79,6 @@ dependencies {
     minecraft "net.minecraftforge:forge:${project.minecraft}-${project.forge}"
     implementation fg.deobf("com.teamabnormals:blueprint:${project.minecraft}-${project.blueprint}")
 
-    compileOnly fg.deobf("curse.maven:incubation-361718:3906687")
     implementation fg.deobf("com.teamabnormals:boatload:${project.minecraft}-${project.boatload}")
     implementation fg.deobf("com.teamabnormals:woodworks:${project.minecraft}-${project.woodworks}")
 
