@@ -92,28 +92,28 @@ public class Autumnity {
 		CompletableFuture<Provider> provider = event.getLookupProvider();
 		ExistingFileHelper helper = event.getExistingFileHelper();
 
-		boolean includeServer = event.includeServer();
+		boolean server = event.includeServer();
 
 		AutumnityDatapackBuiltinEntriesProvider datapackEntries = new AutumnityDatapackBuiltinEntriesProvider(output, provider);
-		generator.addProvider(includeServer, datapackEntries);
+		generator.addProvider(server, datapackEntries);
 		provider = datapackEntries.getRegistryProvider();
 
 		AutumnityBlockTagsProvider blockTags = new AutumnityBlockTagsProvider(output, provider, helper);
-		generator.addProvider(includeServer, blockTags);
-		generator.addProvider(includeServer, new AutumnityItemTagsProvider(output, provider, blockTags.contentsGetter(), helper));
-		generator.addProvider(includeServer, new AutumnityBiomeTagsProvider(output, provider, helper));
-		generator.addProvider(includeServer, new AutumnityBannerPatternTagsProvider(output, provider, helper));
-		generator.addProvider(includeServer, new AutumnityPaintingVariantTagsProvider(output, provider, helper));
-		generator.addProvider(includeServer, new AutumnityStructureTagsProvider(output, provider, helper));
-		generator.addProvider(includeServer, new AutumnityEntityTypeTagsProvider(output, provider, helper));
-		generator.addProvider(includeServer, new AutumnityRecipeProvider(output));
-		generator.addProvider(includeServer, AutumnityAdvancementProvider.create(output, provider, helper));
-		generator.addProvider(includeServer, new AutumnityLootTableProvider(output));
-		generator.addProvider(includeServer, new AutumnityAdvancementModifierProvider(output, provider));
+		generator.addProvider(server, blockTags);
+		generator.addProvider(server, new AutumnityItemTagsProvider(output, provider, blockTags.contentsGetter(), helper));
+		generator.addProvider(server, new AutumnityBiomeTagsProvider(output, provider, helper));
+		generator.addProvider(server, new AutumnityBannerPatternTagsProvider(output, provider, helper));
+		generator.addProvider(server, new AutumnityPaintingVariantTagsProvider(output, provider, helper));
+		generator.addProvider(server, new AutumnityStructureTagsProvider(output, provider, helper));
+		generator.addProvider(server, new AutumnityEntityTypeTagsProvider(output, provider, helper));
+		generator.addProvider(server, new AutumnityRecipeProvider(output));
+		generator.addProvider(server, AutumnityAdvancementProvider.create(output, provider, helper));
+		generator.addProvider(server, new AutumnityLootTableProvider(output));
+		generator.addProvider(server, new AutumnityAdvancementModifierProvider(output, provider));
 
-		boolean includeClient = event.includeClient();
-		generator.addProvider(includeClient, new AutumnityItemModelProvider(output, helper));
-		generator.addProvider(includeClient, new AutumnityBlockStateProvider(output, helper));
+		boolean client = event.includeClient();
+		generator.addProvider(client, new AutumnityItemModelProvider(output, helper));
+		generator.addProvider(client, new AutumnityBlockStateProvider(output, helper));
 	}
 
 	@OnlyIn(Dist.CLIENT)

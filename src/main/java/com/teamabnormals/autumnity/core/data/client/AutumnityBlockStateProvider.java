@@ -2,6 +2,7 @@ package com.teamabnormals.autumnity.core.data.client;
 
 import com.teamabnormals.autumnity.core.Autumnity;
 import com.teamabnormals.autumnity.core.other.AutumnityBlockFamilies;
+import com.teamabnormals.autumnity.core.registry.AutumnityBlocks;
 import com.teamabnormals.blueprint.core.data.client.BlueprintBlockStateProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -23,6 +24,8 @@ public class AutumnityBlockStateProvider extends BlueprintBlockStateProvider {
 		this.blockFamily(AutumnityBlockFamilies.MAPLE_PLANKS_FAMILY);
 		this.blockFamily(AutumnityBlockFamilies.SNAIL_SHELL_BRICKS_FAMILY);
 		this.blockFamily(AutumnityBlockFamilies.SNAIL_SHELL_TILES_FAMILY);
+
+		this.block(CHISELED_SNAIL_SHELL_BRICKS);
 
 		this.logBlocks(MAPLE_LOG, MAPLE_WOOD);
 		this.logBlocks(STRIPPED_MAPLE_LOG, STRIPPED_MAPLE_WOOD);
