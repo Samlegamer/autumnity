@@ -33,6 +33,7 @@ import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -47,7 +48,7 @@ import static net.minecraft.world.item.crafting.Ingredient.of;
 public class AutumnityBlocks {
 	public static final BlockSubRegistryHelper HELPER = Autumnity.REGISTRY_HELPER.getBlockSubHelper();
 
-	public static final RegistryObject<Block> SNAIL_GOO = HELPER.createBlock("snail_goo", () -> new SnailGooBlock(Block.Properties.of().mapColor(MapColor.TERRACOTTA_WHITE).noOcclusion().noCollission().sound(SoundType.HONEY_BLOCK)));
+	public static final RegistryObject<Block> SNAIL_GOO = HELPER.createBlock("snail_goo", () -> new SnailGooBlock(Block.Properties.of().mapColor(MapColor.TERRACOTTA_WHITE).noOcclusion().noCollission().sound(SoundType.HONEY_BLOCK).pushReaction(PushReaction.DESTROY)));
 	public static final RegistryObject<Block> SNAIL_GOO_BLOCK = HELPER.createBlock("snail_goo_block", () -> new SnailGooFullBlock(Block.Properties.of().mapColor(MapColor.TERRACOTTA_WHITE).noOcclusion().sound(SoundType.HONEY_BLOCK)));
 	public static final RegistryObject<Block> PANCAKE = HELPER.createBlock("pancake", () -> new PancakeBlock(Block.Properties.of().strength(0.5F).sound(SoundType.WOOL)));
 	public static final RegistryObject<Block> AUTUMN_CROCUS = HELPER.createBlock("autumn_crocus", () -> new FlowerBlock(AutumnityMobEffects.FOUL_TASTE, 16, PropertyUtil.flower()));
@@ -55,12 +56,12 @@ public class AutumnityBlocks {
 
 	public static final RegistryObject<Block> TURKEY = HELPER.createBlock("turkey", () -> new TurkeyBlock(Block.Properties.of().strength(0.5F).sound(SoundType.WOOL)));
 	public static final RegistryObject<Block> COOKED_TURKEY = HELPER.createBlock("cooked_turkey", () -> new CookedTurkeyBlock(Block.Properties.of().strength(0.5F).sound(SoundType.WOOL)));
-	public static final RegistryObject<Block> TURKEY_EGG_CRATE = HELPER.createBlock("turkey_egg_crate", () -> new Block(Block.Properties.of().mapColor(MapColor.TERRACOTTA_WHITE).strength(1.5F).sound(SoundType.WOOD)));
+	public static final RegistryObject<Block> TURKEY_EGG_CRATE = HELPER.createBlock("turkey_egg_crate", () -> new Block(Block.Properties.of().mapColor(MapColor.TERRACOTTA_WHITE).strength(1.5F).sound(SoundType.WOOD).ignitedByLava()));
 
 	public static final RegistryObject<Block> FOUL_BERRY_BUSH = HELPER.createBlockNoItem("foul_berry_bush", () -> new FoulBerryBushBlock(AutumnityProperties.FOUL_BERRIES));
 	public static final RegistryObject<Block> TALL_FOUL_BERRY_BUSH = HELPER.createBlockNoItem("tall_foul_berry_bush", () -> new TallFoulBerryBushBlock(AutumnityProperties.FOUL_BERRIES));
 	public static final RegistryObject<Block> POTTED_FOUL_BERRIES = HELPER.createBlockNoItem("potted_foul_berries", () -> new FlowerPotBlock(FOUL_BERRY_BUSH.get(), PropertyUtil.flowerPot()));
-	public static final RegistryObject<Block> FOUL_BERRY_BASKET = HELPER.createBlock("foul_berry_basket", () -> new BlueprintDirectionalBlock(Block.Properties.of().mapColor(MapColor.TERRACOTTA_ORANGE).strength(1.5F).sound(SoundType.WOOD)));
+	public static final RegistryObject<Block> FOUL_BERRY_BASKET = HELPER.createBlock("foul_berry_basket", () -> new BlueprintDirectionalBlock(Block.Properties.of().mapColor(MapColor.TERRACOTTA_ORANGE).strength(1.5F).sound(SoundType.WOOD).ignitedByLava()));
 
 	public static final RegistryObject<Block> SOUL_JACK_O_LANTERN = HELPER.createBlock("soul_jack_o_lantern", () -> new AutumnityJackOLanternBlock(Block.Properties.copy(Blocks.PUMPKIN).lightLevel(AutumnityProperties.getLowerLightValue())));
 	public static final RegistryObject<Block> REDSTONE_JACK_O_LANTERN = HELPER.createBlock("redstone_jack_o_lantern", () -> new RedstoneJackOLanternBlock(Block.Properties.copy(Blocks.PUMPKIN).lightLevel(AutumnityProperties.getLightValueLit(7))));
@@ -202,8 +203,7 @@ public class AutumnityBlocks {
 		public static final WoodSetProperties ORANGE_MAPLE = WoodSetProperties.builder(MapColor.TERRACOTTA_ORANGE).leavesColor(MapColor.TERRACOTTA_ORANGE).build();
 		public static final WoodSetProperties RED_MAPLE = WoodSetProperties.builder(MapColor.TERRACOTTA_ORANGE).leavesColor(MapColor.TERRACOTTA_RED).build();
 
-		public static final Block.Properties FOUL_BERRIES = Block.Properties.of().randomTicks().noCollission().sound(SoundType.SWEET_BERRY_BUSH);
-		public static final Block.Properties MAPLE_BRANCH = Block.Properties.of().mapColor(MapColor.TERRACOTTA_WHITE).noCollission().randomTicks().instabreak().sound(SoundType.WOOD);
+		public static final Block.Properties FOUL_BERRIES = Block.Properties.of().randomTicks().noCollission().sound(SoundType.SWEET_BERRY_BUSH).pushReaction(PushReaction.DESTROY);
 		public static final Block.Properties SNAIL_SHELL = Block.Properties.of().mapColor(MapColor.TERRACOTTA_BROWN).requiresCorrectToolForDrops().strength(3.0F, 9.0F);
 
 		public static ToIntFunction<BlockState> getLightValueLit(int lightValue) {
