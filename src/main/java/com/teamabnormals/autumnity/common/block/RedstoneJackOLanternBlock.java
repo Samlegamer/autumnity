@@ -29,20 +29,9 @@ public class RedstoneJackOLanternBlock extends AutumnityJackOLanternBlock {
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-		if (!worldIn.isClientSide) {
-			boolean flag = state.getValue(LIT);
-			if (flag != worldIn.hasNeighborSignal(pos)) {
-				worldIn.setBlock(pos, state.cycle(LIT), 2);
-			}
-		}
-	}
-
-	@Override
-	public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource rand) {
-		if (state.getValue(LIT) && !worldIn.hasNeighborSignal(pos)) {
-			worldIn.setBlock(pos, state.cycle(LIT), 2);
-		}
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean moving) {
+		if (!level.isClientSide && state.getValue(LIT) != level.hasNeighborSignal(pos))
+			level.setBlock(pos, state.cycle(LIT), 2);
 	}
 
 	@Override

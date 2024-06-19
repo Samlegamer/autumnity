@@ -34,9 +34,10 @@ public class CarvedLargePumpkinSliceBlock extends LargeJackOLanternSliceBlock {
 
 			if (canCarve(hitface, facing) && (hitface.getAxis() == Axis.X && carvedside == CarvedSide.X || hitface.getAxis() == Axis.Z && carvedside == CarvedSide.Z)) {
 				if (!level.isClientSide()) {
-					BlockState blockstate = jackolantern.defaultBlockState().setValue(FACING, state.getValue(FACING)).setValue(HALF, state.getValue(HALF)).setValue(CARVED_SIDE, state.getValue(CARVED_SIDE));
+					BlockState blockstate = jackolantern.withPropertiesOf(state);
 					if (jackolantern == AutumnityBlocks.LARGE_REDSTONE_JACK_O_LANTERN_SLICE.get()) {
-						blockstate = blockstate.setValue(RedstoneJackOLanternBlock.LIT, level.hasNeighborSignal(pos));
+						boolean powered = blockstate.getValue(POWERED);
+						blockstate = blockstate.setValue(RedstoneJackOLanternBlock.LIT, powered || isAnotherSlicePowered(level, blockstate, pos));
 					}
 
 					level.setBlock(pos, blockstate, 11);
